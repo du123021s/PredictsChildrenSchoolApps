@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Page App</title>
+
+    <style>
+        .container {
+            max-width: 568px; /* Điều chỉnh kích thước của form */
+            margin: 0 auto; /* Căn giữa form trong trang */
+            padding: 20px; /* Khoảng cách giữa nội dung và biên form */
+            background-color: #f5f5f5; /* Màu nền cho vùng bao */
+            border-radius: 10px; /* Bo góc cho vùng bao */
+        }
+    
+        .form-group {
+            margin-bottom: 20px; /* Khoảng cách giữa các ô trong form */
+        }
+    
+        .form-control {
+            width: 10%; /* Ổ đầy ngang */
+        }
+    
+        .btnForm {
+            display: block; /* Hiển thị nút gửi ở hàng riêng */
+            margin-top: 20px; /* Khoảng cách từ nút đến ô trên cùng */
+        }
+    
+        .error-message {
+            text-align: center; /* Căn giữa thông báo lỗi */
+        }
+
+    </style>
+    
+
+</head>
+<body style="background-color: #3498db; padding: 20px;">
+    <div class="container">
+        <h1 class="text-center text-white">DỰ ĐOÁN XẾP HẠNG ĐƠN XIN VÀO VÀO TRƯỜNG</h1>
+        <form action="/form" method="post" class="mt-4" onsubmit="return checkForm();">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+               
+                {{ form.parents.label(class="text-white") }} 
+                {{ form.parents(class="form-control", type="number", min=1, max=3) }}<span>   1- usual, 2- retentious, 3- great_pret</span>
+            </div>
+            <div class="form-group">
+                {{ form.has_nurs.label(class="text-white") }}    
+                {{ form.has_nurs(class="form-control", type="number", min=1, max=5) }}<span>1- proper, 2- less_proper, 3- improper, 4- critical, 5- very_crit</span>
+            </div>
+            <div class="form-group">
+                {{ form.form.label(class="text-white") }}
+                {{ form.form(class="form-control", type="number", min=1, max=4) }}<span>  1- complete, 2-completed, 3- incomplete, 4- foster</span>
+            </div>
+            <div class="form-group">
+                {{ form.children.label(class="text-white") }}
+                {{ form.children(class="form-control", type="number", min=1, max=3) }}<span>   1- one children, 2- two children, 3- three children, 4- more</span>
+            </div>
+            <div class="form-group">
+                {{ form.housing.label(class="text-white") }}
+                {{ form.housing(class="form-control", type="number", min=1, max=3) }}<span>   1- usual, 2- retentious, 3- great_pret</span>
+            </div>
+            <div class="form-group">
+                {{ form.finance.label(class="text-white") }}
+                {{ form.finance(class="form-control", type="number", min=1, max=2) }}<span> 1- convenient, 2- inconv</span>
+            </div>
+            <div class="form-group">
+                {{ form.social.label(class="text-white") }}
+                {{ form.social(class="form-control", type="number", min=1, max=3) }}<span>  1- non-prob, 2- slightly_prob, 3- problematic</span>
+            </div>
+            <div class="form-group">
+                {{ form.health.label(class="text-white") }}
+                {{ form.health(class="form-control", type="number", min=1, max=3) }}<span>  1- not_recom, 2- recommended, 3- priority</span>
+            </div>
+            <button type="submit" class="btn btn-primary btnForm">Gửi Dữ Liệu</button>
+        </form>
+
+        {% if result %}
+        <div class="mt-4">
+            <h3 class="text-white">Kết Quả Dự Đoán:</h3>
+            <p class="text-white">{{ result }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="error-message" id="error-message" style="color: red; display: none; margin-top: 10px;">
+        Vui lòng điền đầy đủ thông tin và thử lại.
+    </div>
+    
+    <script>
+        function checkForm() {
+            var parents = document.getElementById('parents').value;
+            var has_nurs = document.getElementById('has_nurs').value;
+            var form = document.getElementById('form').value;
+            var children = document.getElementById('children').value;
+            var housing = document.getElementById('housing').value;
+            var finance = document.getElementById('finance').value;
+            var social = document.getElementById('social').value;
+            var health = document.getElementById('health').value;
+            // Kiểm tra các trường khác tương tự
+            if (parents === '' || has_nurs==='' || form === '' || children === '' || housing === '' ||
+                finance === '' || social === '' || health === '') {
+                document.getElementById('error-message').style.display = 'block';
+                return false; // Ngăn form được gửi đi
+            }
+            return true; // Cho phép form được gửi đi
+        }
+    </script>
+</body>
+</html>
